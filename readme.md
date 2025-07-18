@@ -2,7 +2,7 @@
 
 Une scène 3D interactive de maison hantée réalisée avec [Three.js](https://threejs.org/), inspirée du parcours Three.js Journey par Bruno Simon.
 
-![Aperçu de la maison hantée](./docs/scene.png)
+<img src="./docs/scene.png" alt="Aperçu de la maison hantée" width="480"/>
 
 ## 🚀 Démo
 
