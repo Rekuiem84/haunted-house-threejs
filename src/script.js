@@ -36,43 +36,85 @@ floorColorTexture.repeat.set(8, 8);
 floorColorTexture.colorSpace = THREE.SRGBColorSpace;
 floorColorTexture.wrapS = THREE.RepeatWrapping;
 floorColorTexture.wrapT = THREE.RepeatWrapping;
+
 floorARMTexture.repeat.set(8, 8);
 floorARMTexture.wrapS = THREE.RepeatWrapping;
 floorARMTexture.wrapT = THREE.RepeatWrapping;
+
 floorNormalTexture.repeat.set(8, 8);
 floorNormalTexture.wrapS = THREE.RepeatWrapping;
 floorNormalTexture.wrapT = THREE.RepeatWrapping;
+
 floorDispTexture.repeat.set(8, 8);
 floorDispTexture.wrapS = THREE.RepeatWrapping;
 floorDispTexture.wrapT = THREE.RepeatWrapping;
 
 // Walls
 const wallColorTexture = textureLoader.load(
-	"./wall/castle_brick_broken_06_1k/castle_brick_broken_06_diff_1k.webp"
+	"./wall/worn_planks_1k/worn_planks_diff_1k.webp"
 );
 const wallARMTexture = textureLoader.load(
-	"./wall/castle_brick_broken_06_1k/castle_brick_broken_06_arm_1k.webp"
+	"./wall/worn_planks_1k/worn_planks_arm_1k.webp"
 );
 const wallNormalTexture = textureLoader.load(
-	"./wall/castle_brick_broken_06_1k/castle_brick_broken_06_nor_gl_1k.webp"
+	"./wall/worn_planks_1k/worn_planks_nor_gl_1k.webp"
 );
+const wallDispTexture = textureLoader.load(
+	"./wall/worn_planks_1k/worn_planks_disp_1k.webp"
+);
+
 wallColorTexture.colorSpace = THREE.SRGBColorSpace;
+
+wallColorTexture.repeat.set(1, 1);
+wallARMTexture.repeat.set(1, 1);
+wallNormalTexture.repeat.set(1, 1);
+wallDispTexture.repeat.set(1, 1);
+
+wallColorTexture.wrapS = THREE.RepeatWrapping;
+wallARMTexture.wrapS = THREE.RepeatWrapping;
+wallNormalTexture.wrapS = THREE.RepeatWrapping;
+wallDispTexture.wrapS = THREE.RepeatWrapping;
+
+// Logs
+const logColorTexture = textureLoader.load(
+	"./log/bark_willow_1k/bark_willow_diff_1k.webp"
+);
+const logARMTexture = textureLoader.load(
+	"./log/bark_willow_1k/bark_willow_arm_1k.webp"
+);
+const logNormalTexture = textureLoader.load(
+	"./log/bark_willow_1k/bark_willow_nor_gl_1k.webp"
+);
+const logDispTexture = textureLoader.load(
+	"./log/bark_willow_1k/bark_willow_disp_1k.webp"
+);
+logColorTexture.colorSpace = THREE.SRGBColorSpace;
+
+logColorTexture.repeat.set(3, 1);
+logARMTexture.repeat.set(3, 1);
+logNormalTexture.repeat.set(3, 1);
+logDispTexture.repeat.set(3, 1);
+
+logColorTexture.wrapS = THREE.RepeatWrapping;
+logARMTexture.wrapS = THREE.RepeatWrapping;
+logNormalTexture.wrapS = THREE.RepeatWrapping;
+logDispTexture.wrapS = THREE.RepeatWrapping;
 
 // Roof
 const roofColorTexture = textureLoader.load(
-	"./roof/roof_slates_02_1k/roof_slates_02_diff_1k.webp"
+	"./roof/wood_planks_dirt_1k/wood_planks_dirt_diff_1k.webp"
 );
 const roofARMTexture = textureLoader.load(
-	"./roof/roof_slates_02_1k/roof_slates_02_arm_1k.webp"
+	"./roof/wood_planks_dirt_1k/wood_planks_dirt_arm_1k.webp"
 );
 const roofNormalTexture = textureLoader.load(
-	"./roof/roof_slates_02_1k/roof_slates_02_nor_gl_1k.webp"
+	"./roof/wood_planks_dirt_1k/wood_planks_dirt_nor_gl_1k.webp"
 );
 roofColorTexture.colorSpace = THREE.SRGBColorSpace;
 
-roofColorTexture.repeat.set(3, 1);
-roofARMTexture.repeat.set(3, 1);
-roofNormalTexture.repeat.set(3, 1);
+roofColorTexture.repeat.set(6, 1);
+roofARMTexture.repeat.set(6, 1);
+roofNormalTexture.repeat.set(6, 1);
 
 roofColorTexture.wrapS = THREE.RepeatWrapping;
 roofARMTexture.wrapS = THREE.RepeatWrapping;
@@ -121,8 +163,8 @@ const doorAmbientOcclusionTexture = textureLoader.load(
 	"./door/ambientOcclusion.webp"
 );
 const doorHeightTexture = textureLoader.load("./door/height.webp");
-const doorMetalnessTexture = textureLoader.load("./door/metalness.webp");
 const doorNormalTexture = textureLoader.load("./door/normal.webp");
+const doorMetalnessTexture = textureLoader.load("./door/metalness.webp");
 const doorRoughnessTexture = textureLoader.load("./door/roughness.webp");
 
 doorColorTexture.colorSpace = THREE.SRGBColorSpace;
@@ -154,17 +196,54 @@ scene.add(floor);
 
 // Walls
 const walls = new THREE.Mesh(
-	new THREE.BoxGeometry(4, 2.5, 4),
+	new THREE.BoxGeometry(4, 2.5, 4, 100, 100, 100),
 	new THREE.MeshStandardMaterial({
 		map: wallColorTexture,
 		aoMap: wallARMTexture,
 		roughnessMap: wallARMTexture,
 		metalnessMap: wallARMTexture,
 		normalMap: wallNormalTexture,
+		displacementMap: wallDispTexture,
+		displacementScale: 0.7,
+		displacementBias: -0.581,
 	})
 );
 walls.position.y = 1.25;
 house.add(walls);
+
+// Logs (angle de la cabane en bois)
+const logsGroup = new THREE.Group();
+house.add(logsGroup);
+
+const logGeometry = new THREE.CylinderGeometry(0.25, 0.25, 2.85, 32, 32);
+const logMaterial = new THREE.MeshStandardMaterial({
+	map: logColorTexture,
+	aoMap: logARMTexture,
+	roughnessMap: logARMTexture,
+	metalnessMap: logARMTexture,
+	normalMap: logNormalTexture,
+	displacementMap: logDispTexture,
+	displacementScale: 0.15,
+	displacementBias: -0.15,
+});
+
+const logPositions = [
+	[2, 1.25, 2], // avant droit
+	[-2, 1.25, 2], // avant gauche
+	[2, 1.25, -2], // arrière droit
+	[-2, 1.25, -2], // arrière gauche
+];
+
+logPositions.forEach((pos) => {
+	const log = new THREE.Mesh(logGeometry, logMaterial);
+	log.position.set(pos[0], pos[1], pos[2]);
+	// Générer les UV2 pour l'aoMap/displacementMap
+	log.geometry.setAttribute(
+		"uv2",
+		new THREE.BufferAttribute(log.geometry.attributes.uv.array, 2)
+	);
+	logsGroup.add(log);
+});
 
 // Roof
 const roof = new THREE.Mesh(
@@ -271,7 +350,7 @@ for (let i = 0; i < 40; i++) {
  * Lights
  */
 // Ambient light
-const ambientLight = new THREE.AmbientLight("#86CDFF", 0.25);
+const ambientLight = new THREE.AmbientLight("#86CDFF", 0.2);
 scene.add(ambientLight);
 
 // Directional light
@@ -280,7 +359,7 @@ directionalLight.position.set(3, 2, -8);
 scene.add(directionalLight);
 
 // Door light
-const doorLight = new THREE.PointLight("#ff7d46", 5);
+const doorLight = new THREE.PointLight("#ff7d46", 3);
 doorLight.position.set(0, 2.2, 2.5);
 house.add(doorLight);
 
@@ -333,6 +412,9 @@ scene.add(camera);
 
 // Controls
 const controls = new OrbitControls(camera, canvas);
+
+// Empêcher la caméra de descendre sous le sol
+controls.maxPolarAngle = Math.PI / 2 - 0.1;
 controls.enableDamping = true;
 
 /**
@@ -360,6 +442,11 @@ ghost4.castShadow = true;
 
 walls.castShadow = true;
 walls.receiveShadow = true;
+
+logsGroup.children.forEach((log) => {
+	log.castShadow = true;
+	log.receiveShadow = true;
+});
 
 door.receiveShadow = true;
 
@@ -423,6 +510,7 @@ scene.fog = new THREE.FogExp2("#02343f", 0.1);
  * Animate
  */
 const timer = new Timer();
+const cameraLimit = 0.5;
 
 const tick = () => {
 	// Timer
@@ -431,6 +519,11 @@ const tick = () => {
 
 	// Update controls
 	controls.update();
+
+	// Camera movement
+	if (camera.position.y < cameraLimit) {
+		camera.position.y = cameraLimit;
+	}
 
 	// Update ghosts
 	const ghost1Angle = elapsedTime * 0.8;
