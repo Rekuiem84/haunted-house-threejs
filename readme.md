@@ -51,7 +51,7 @@ Une scène 3D interactive de maison hantée réalisée avec [Three.js](https://t
 ├── static/        # Textures et assets statiques
 ├── dist/          # Fichiers générés pour la production
 ├── package.json   # Dépendances et scripts
-└── vite.config.js  # Configuration Vite
+└── vite.config.js # Configuration Vite
 ```
 
 ## 🖼️ Textures
