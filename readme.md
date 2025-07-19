@@ -57,3 +57,7 @@ Une scène 3D interactive de maison hantée réalisée avec [Three.js](https://t
 ## 🖼️ Textures
 
 Les textures utilisées proviennent de [Poly Haven](https://polyhaven.com/) et sont stockées dans le dossier [`static/`](static/).
+
+## 🔗 Mes autres projets Three.js
+
+- [Repo Three.js Journey principal](https://github.com/Rekuiem84/threejs-journey) — pour retrouver tous mes projets suivant ce parcours
